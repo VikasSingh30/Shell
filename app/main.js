@@ -5,7 +5,12 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-// Uncomment this block to pass the first stage
+
 rl.question("$ ", (answer) => {
+  if (validCommands.includes(answer.trim())) {
+    console.log("Command not found");
+  } else { 
+    console.log("Invalid command");
+  }
   rl.close();
 });
