@@ -7,10 +7,6 @@ const rl = readline.createInterface({
 
 
 rl.question("$ ", (answer) => {
-  if (validCommands.includes(answer.trim())) {
-    console.log("Command not found");
-  } else { 
-    console.log("Invalid command");
-  }
+  console.log(`${answer}: command not found`);
   rl.close();
 });
