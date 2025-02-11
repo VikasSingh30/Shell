@@ -6,34 +6,28 @@ const rl = readline.createInterface({
   output: process.stdout,
   prompt: "$ "
 });
-rl.prompt();
+
+rl.prompt();    // initial prompt
 
 // rl.question("$ ", (answer) => {
 //   console.log(`${answer}: command not found`);
 //   rl.close();
 // });
 rl.on("line", (input) => {
-  console.log(`${input}: command not found`);
-  rl.prompt();
- });
- 
-function prompt() {
-  rl.question("$ ", (answer) => {
-    if (answer.trim() === "exit") { 
-      console.log("Exiting REPL...");
-    // console.log(`${answer}: command not found`);
-      rl.close();
-      return;
-    }
-    try {
-      let result = eval(answer);
-      console.log(result);
-    }catch (e) {
-      console.log(`${answer}: command not found`);
-    }
-      
-    prompt();
-  });
+if input.trim() === "exit" {
+  rl.close();
+  return;
 }
-console.log("REPL started")
-prompt();
+try{
+  let result = eval(input);
+  console.log(result);
+}catch(e){
+  console.log(`${input}: command not found`);
+}
+ 
+  rl.prompt();
+});
+rl.on("close", () => {
+  console.log("Exiting...");
+  // process.exit(0);
+});
