@@ -34,12 +34,20 @@ function prompt() {
   process.stdout.write("$ "); // Display prompt without newline
 
   rl.once("line", (input) => {
-    if (input.trim() === "exit 0") {
+    const trimmedInput = input.trim(); // line addes for echo builtin
+    // if (input.trim() === "exit 0")  // to implement exit exit 0 line was addes
+     if (trimmedInput === "exit 0") {   // line addes to implement echo
       rl.close();
       process.exit(0); // Exit with status code 0
     }
+    //function for echo implementation
+    if (trimmedInput.startsWith("echo")) {
+      console.log(trimmedInput.slice(5)); // Print the argument to echo
+    }else{
+      console.log(`${trimmedInput}: command not found`); // Print the command not found
+    }
 
-    console.log(`${input}: command not found`);
+    // console.log(`${input}: command not found`); // exit 0 line
     prompt(); // Continue loop
   });
 }
@@ -48,5 +56,5 @@ prompt(); // Start REPL
 
 rl.on("close", () => {
   // console.log("Exiting...");
-  process.exit(0);
+  process.exit(0);  // clean exit
 });
