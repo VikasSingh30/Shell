@@ -7,24 +7,24 @@ const rl = readline.createInterface({
 });
 
 
-// rl.question("$ ", (answer) => {
-//   console.log(`${answer}: command not found`);
-//   rl.close();
-// });
+rl.question("$ ", (answer) => {
+  console.log(`${answer}: command not found`);
+  rl.close();
+});
 
 function prompt() {
-  rl.question("$ ", (command) => {
-    if (command.trim() === "exit") { 
+  rl.question("$ ", (answer) => {
+    if (answer.trim() === "exit") { 
       console.log("Exiting REPL...");
     // console.log(`${answer}: command not found`);
       rl.close();
       return;
     }
     try {
-      let result = eval(command);
+      let result = eval(answer);
       console.log(result);
     }catch (e) {
-      console.log(`${command}: command not found`);
+      console.log(`${answer}: command not found`);
     }
       
     prompt();
