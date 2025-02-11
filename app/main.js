@@ -1,4 +1,5 @@
 const readline = require("readline");
+const { REPLServer } = require("repl");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -6,15 +7,28 @@ const rl = readline.createInterface({
 });
 
 
-rl.question("$ ", (answer) => {
-  console.log(`${answer}: command not found`);
-  rl.close();
-});
+// rl.question("$ ", (answer) => {
+//   console.log(`${answer}: command not found`);
+//   rl.close();
+// });
 
 function prompt() {
-  rl.question("$ ", (answer) => {
-    console.log(`${answer}: command not found`);
+  rl.question("$ ", (command) => {
+    if (command.trim() === "exit") { 
+      console.log("Exiting REPL...");
+    // console.log(`${answer}: command not found`);
+      rl.close();
+      return;
+    }
+    try {
+      let result = eval(command);
+      console.log(result);
+    }catch (e) {
+      console.log(`${command}: command not found`);
+    }
+      
     prompt();
   });
 }
+console.log("REPL started")
 prompt();
