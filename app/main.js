@@ -47,6 +47,6 @@ function prompt() {
 prompt(); // Start REPL
 
 rl.on("close", () => {
-  console.log("Exiting...");
+  // console.log("Exiting...");
   process.exit(0);
 });
