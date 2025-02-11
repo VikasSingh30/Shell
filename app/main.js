@@ -14,7 +14,7 @@ rl.prompt();    // initial prompt
 //   rl.close();
 // });
 rl.on("line", (input) => {
-if input.trim() === "exit" {
+if (input.trim() === "exit") {
   rl.close();
   return;
 }
