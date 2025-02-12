@@ -72,7 +72,7 @@ function handleTypeCommand (args){
   //     console.log(`${cmd}: not found`);
   //   }
   }else {
-    console.log(`${cmd} is {cmd}`);
+    console.log(`${cmd} is ${cmd}`);
   }
 }
 
