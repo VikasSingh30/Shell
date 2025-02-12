@@ -1,5 +1,7 @@
 const readline = require("readline");
 const { REPLServer } = require("repl");
+const fs = require("fs");  //implementing fs module for type excutable
+const path = require("path");  //implementing path module for type excutable
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -29,8 +31,22 @@ const rl = readline.createInterface({
 //   rl.prompt();
 // });
 
-//EXIT 0 implemented
+
 const builtins = new Set(["echo", "exit", "type"  ]); // line addes for type builtin to work with other built in
+
+function findExecutable(command) {  // function for type executable
+  const pathDirs = process.env.PATH? process.env.PATH.split(";") : []; // Get PATH environment variable and split into directories
+
+  for (const dir of pathDirs) {
+    const fullPath = path.join(dir, command); // Combine directory and command
+    if (fs.existsSync(fullPath) && fs.accessSync(fullPath, fs.constants.X_OK) === undefined) {
+      return fullPath; // Return path to executable if it exists and is executable
+    }
+  }
+   return fullPath; // not found in path
+}
+
+//EXIT 0 implemented
 function prompt() {
   process.stdout.write("$ "); // Display prompt without newline
 
@@ -58,7 +74,13 @@ function prompt() {
       if (builtins.has(checkCommand)) {
         console.log(`${checkCommand} is a shell builtin`);
       } else {
-        console.log(`${checkCommand}: not found`);
+        const executable = findExecutable(checkCommand); // Find the executable (line added for type executable)
+        if (executable) {
+          console.log(`${checkCommand} is ${executablePath}`);
+        }else{
+          console.log(`${checkCommand}: not found`);
+        }
+        // console.log(`${checkCommand}: not found`);
       }
     } else {
       console.log(`${trimmedInput}: command not found`);
