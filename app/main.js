@@ -88,7 +88,17 @@ function executeCommand(command, args) {
 
     // Spawn the process
     // const child = spawn(executablePath, args, { stdio: "inherit", shell: true });
-    const child = spawn(command, args, { stdio: "inherit", shell: false });
+    // const child = spawn(command, args, { stdio: "inherit", shell: false });
+    const child = spawn(command, args, { stdio: ["inherit", "pipe", "pipe"], shell: false });
+
+    child.stdout.on("data", (data) => {
+      process.stdout.write(data); // Correctly handle stdout
+    });
+  
+    child.stderr.on("data", (data) => {
+      process.stderr.write(data); // Correctly handle stderr
+    });
+    
     child.on("error", (err) => {
       console.log(`${command}: execution failed`);
       // prompt();   //continue REPL after failure  
