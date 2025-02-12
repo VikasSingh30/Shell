@@ -40,7 +40,7 @@ function findExecutable(command) {  // function for type executable
   for (const dir of pathDirs) {
     const fullPath = path.join(dir, command); // Combine directory and command
     try{
-      if (fs.existsSync(fullPath)) {
+      if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) { // Check if file exists and is a file
         fs.accessSync(fullPath, fs.constants.X_OK); // Check if executable
         return fullPath; // Found the executable
       }
@@ -49,7 +49,21 @@ function findExecutable(command) {  // function for type executable
     }
   }
   return null; // Not found in PATH
+}
 
+function handleTypeCommand (args){
+  const cmd = args[1];
+
+  if (builtins.has(cmd)) {
+    console.log(`${cmd} is a shell builtin`);
+  }else{
+    const executablePath = findExecutable(cmd);
+    if (executablePath) {
+      console.log(`${cmd} is ${executablePath}`);
+    }else{
+      console.log(`${cmd}: not found`);
+    }
+  }
 }
 
 //EXIT 0 implemented
@@ -57,14 +71,15 @@ function prompt() {
   process.stdout.write("$ "); // Display prompt without newline
 
   rl.once("line", (input) => {
-    const trimmedInput = input.trim(); // line addes for echo builtin
+    // const trimmedInput = input.trim(); // line addes for echo builtin
     // if (input.trim() === "exit 0")  // to implement exit exit 0 line was added
-    const args = trimmedInput.split(" "); // Split input into command and arguments (line addes for type builtin)
+    // const args = trimmedInput.split(" "); // Split input into command and arguments (line addes for type builtin)
+    const args = input.trim().split(" "); // line added for type executable
     const command = args[0]; // Extract command from input (line addes for type builtin)
-     if (trimmedInput === "exit 0") {   // line addes to implement echo
+    if (command === "exit"){  //  if (trimmedInput === "exit 0") {   // line addes to implement echo
       rl.close();
       process.exit(0); // Exit with status code 0
-    }
+    
     //function for echo implementation
     // if (trimmedInput.startsWith("echo")) {
     //   console.log(trimmedInput.slice(5)); // Print the argument to echo
@@ -73,24 +88,28 @@ function prompt() {
     // }
 
     // for type built in
-    if (command === "echo") {
+    }else if (command === "echo") { // else addes for type
       console.log(args.slice(1).join(" ")); // Print everything after "echo"
     } else if (command === "type") {
-      const checkCommand = args[1]; // The command to check
-      if (builtins.has(checkCommand)) {
-        console.log(`${checkCommand} is a shell builtin`);
-      } else {
-        const executable = findExecutable(checkCommand); // Find the executable (line added for type executable)
-        if (executable) {
-          console.log(`${checkCommand} is ${executablePath}`);
-        }else{
-          console.log(`${checkCommand}: not found`);
-        }
-        // console.log(`${checkCommand}: not found`);
-      }
+      handleTypeCommand(args);
     } else {
-      console.log(`${trimmedInput}: command not found`);
+      console.log(`${command}: command not found`); // Print the command not found
     }
+    //   const checkCommand = args[1]; // The command to check
+    //   if (builtins.has(checkCommand)) {
+    //     console.log(`${checkCommand} is a shell builtin`);
+    //   } else {
+    //     const executable = findExecutable(checkCommand); // Find the executable (line added for type executable)
+    //     if (executable) {
+    //       console.log(`${checkCommand} is ${executablePath}`);
+    //     }else{
+    //       console.log(`${checkCommand}: not found`);
+    //     }
+    //     // console.log(`${checkCommand}: not found`);
+    //   }
+    // } else {
+    //   console.log(`${trimmedInput}: command not found`);
+    // }
 
     // console.log(`${input}: command not found`); // exit 0 line
     prompt(); // Continue loop
@@ -99,7 +118,7 @@ function prompt() {
 
 prompt(); // Start REPL
 
-rl.on("close", () => {
-  // console.log("Exiting...");
-  process.exit(0);  // clean exit
-});
+// rl.on("close", () => {
+//   // console.log("Exiting...");
+//   process.exit(0);  // clean exit
+// });
