@@ -87,8 +87,8 @@ function executeCommand(command, args) {
   // }
 
     // Spawn the process
-    const child = spawn(executablePath, args, { stdio: "inherit", shell: true });
-
+    // const child = spawn(executablePath, args, { stdio: "inherit", shell: true });
+    const child = spawn(command, args, { stdio: "inherit", shell: false });
     child.on("error", (err) => {
       console.log(`${command}: execution failed`);
       prompt();   //continue REPL after failure  
