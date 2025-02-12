@@ -39,11 +39,17 @@ function findExecutable(command) {  // function for type executable
 
   for (const dir of pathDirs) {
     const fullPath = path.join(dir, command); // Combine directory and command
-    if (fs.existsSync(fullPath) && fs.accessSync(fullPath, fs.constants.X_OK) === undefined) {
-      return fullPath; // Return path to executable if it exists and is executable
+    try{
+      if (fs.existsSync(fullPath)) {
+        fs.accessSync(fullPath, fs.constants.X_OK); // Check if executable
+        return fullPath; // Found the executable
+      }
+    } catch (err) {
+      continue; // Ignore permission errors
     }
   }
-   return fullPath; // not found in path
+  return null; // Not found in PATH
+
 }
 
 //EXIT 0 implemented
