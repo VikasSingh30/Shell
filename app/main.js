@@ -1,14 +1,14 @@
 const readline = require("readline");
-const { REPLServer } = require("repl");
-const fs = require("fs");  //implementing fs module for type excutable
-const path = require("path");  //implementing path module for type excutable
+// const { REPLServer } = require("repl");
+// const fs = require("fs");  //implementing fs module for type excutable
+// const path = require("path");  //implementing path module for type excutable
 const { spawn } = require("child_process");  //implementing child_process module for type excutable
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+// const rl = readline.createInterface({
+  // input: process.stdin,
+  // output: process.stdout,
   // prompt: "$ "  // prompt for repl
-});
+// });
 
 // rl.prompt();    // initial prompt for repl
 
@@ -35,24 +35,24 @@ const rl = readline.createInterface({
 
 const builtins = new Set(["echo", "exit", "type"  ]); // line addes for type builtin to work with other built in
 
-function findExecutable(command) {  // function for type executable
-  if (!process.env.PATH) return null;
-  // const pathDirs = process.env.PATH? process.env.PATH.split(";") : []; // Get PATH environment variable and split into directories
-  const pathDirs = process.env.PATH.split(":"); // Get PATH environment variable and split into directories
+// function findExecutable(command) {  // function for type executable
+//   if (!process.env.PATH) return null;
+//   // const pathDirs = process.env.PATH? process.env.PATH.split(";") : []; // Get PATH environment variable and split into directories
+//   const pathDirs = process.env.PATH.split(":"); // Get PATH environment variable and split into directories
 
-  for (const dir of pathDirs) {
-    const fullPath = path.join(dir, command); // Combine directory and command
-    try{
-      if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) { // Check if file exists and is a file
-        fs.accessSync(fullPath, fs.constants.X_OK); // Check if executable
-        return fullPath; // Found the executable
-      }
-    } catch (err) {
-      continue; // Ignore permission errors
-    }
-  }
-  return null; // Not found in PATH
-}
+//   for (const dir of pathDirs) {
+//     const fullPath = path.join(dir, command); // Combine directory and command
+//     try{
+//       if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) { // Check if file exists and is a file
+//         fs.accessSync(fullPath, fs.constants.X_OK); // Check if executable
+//         return fullPath; // Found the executable
+//       }
+//     } catch (err) {
+//       continue; // Ignore permission errors
+//     }
+//   }
+//   return null; // Not found in PATH
+// }
 
 function handleTypeCommand (args){
   const cmd = args[1];
@@ -64,24 +64,27 @@ function handleTypeCommand (args){
 
   if (builtins.has(cmd)) {
     console.log(`${cmd} is a shell builtin`);
-  }else{
-    const executablePath = findExecutable(cmd);
-    if (executablePath) {
-      console.log(`${cmd} is ${executablePath}`);
-    }else{
-      console.log(`${cmd}: not found`);
-    }
+  // }else{                                       //commented for run command function
+  //   const executablePath = findExecutable(cmd);
+  //   if (executablePath) {
+  //     console.log(`${cmd} is ${executablePath}`);
+  //   }else{
+  //     console.log(`${cmd}: not found`);
+  //   }
+  }else {
+    console.log(`${cmd} is {cmd}`);
   }
 }
 
 // Function to execute external commands
 function executeCommand(command, args) {
-  const executablePath = findExecutable(command);
+  // const executablePath = findExecutable(command);
 
-  if (!executablePath) {
-    console.log(`${command}: command not found`);
-    return;
-  }
+
+  // if (!executablePath) {
+  //   console.log(`${command}: command not found`);
+  //   return;
+  // }
 
     // Spawn the process
     const child = spawn(executablePath, args, { stdio: "inherit" });
