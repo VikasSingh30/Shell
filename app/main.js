@@ -91,21 +91,22 @@ function executeCommand(command, args) {
     const child = spawn(command, args, { stdio: "inherit", shell: false });
     child.on("error", (err) => {
       console.log(`${command}: execution failed`);
-      prompt();   //continue REPL after failure  
+      // prompt();   //continue REPL after failure  
     });
   
     child.on("exit", (code) => {
       if (code !== 0) {
         console.log(`${command}: process exited with code ${code}`);
       }
-      prompt();  //ensure prompt continues
+      // prompt();  //ensure prompt continues
+      setTimeout(prompt, 10);  //ensure prompt continues
     });
   }
 
 //EXIT 0 implemented
 // shell REPL loop
 function prompt() {
-  process.stdout.write("$ "); // Display prompt without newline
+  // process.stdout.write("$ "); // Display prompt without newline  // line removed in order to run the command without $ prompt
 
   rl.once("line", (input) => {
     // const trimmedInput = input.trim(); // line addes for echo builtin
