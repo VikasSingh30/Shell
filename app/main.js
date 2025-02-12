@@ -35,6 +35,7 @@ const rl = readline.createInterface({
 const builtins = new Set(["echo", "exit", "type"  ]); // line addes for type builtin to work with other built in
 
 function findExecutable(command) {  // function for type executable
+  if (!process.env.PATH) return null;
   const pathDirs = process.env.PATH? process.env.PATH.split(";") : []; // Get PATH environment variable and split into directories
 
   for (const dir of pathDirs) {
@@ -54,6 +55,11 @@ function findExecutable(command) {  // function for type executable
 function handleTypeCommand (args){
   const cmd = args[1];
 
+  if(!cmd){
+    console.log("type: missing argument");
+    return;
+  }
+
   if (builtins.has(cmd)) {
     console.log(`${cmd} is a shell builtin`);
   }else{
@@ -67,6 +73,7 @@ function handleTypeCommand (args){
 }
 
 //EXIT 0 implemented
+// shell REPL loop
 function prompt() {
   process.stdout.write("$ "); // Display prompt without newline
 
@@ -116,7 +123,7 @@ function prompt() {
   });
 }
 
-prompt(); // Start REPL
+prompt(); // Start shell
 
 // rl.on("close", () => {
 //   // console.log("Exiting...");
