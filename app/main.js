@@ -98,7 +98,7 @@ function executeCommand(command, args) {
     child.stderr.on("data", (data) => {
       process.stderr.write(data); // Correctly handle stderr
     });
-    
+
     child.on("error", (err) => {
       console.log(`${command}: execution failed`);
       // prompt();   //continue REPL after failure  
@@ -109,14 +109,17 @@ function executeCommand(command, args) {
         console.log(`${command}: process exited with code ${code}`);
       }
       // prompt();  //ensure prompt continues
-      setTimeout(prompt, 10);  //ensure prompt continues
+      // setTimeout(prompt, 10);  //ensure prompt continues
+      rl.prompt(); // Resume REPL correctly
+
     });
   }
 
 //EXIT 0 implemented
 // shell REPL loop
 function prompt() {
-  process.stdout.write("$ "); // Display prompt without newline  // line removed in order to run the command without $ prompt
+ // process.stdout.write("$ "); // Display prompt without newline  // line removed in order to run the command without $ prompt
+ rl.prompt(); // Display "$ " prompt
 
   rl.once("line", (input) => {
     // const trimmedInput = input.trim(); // line addes for echo builtin
@@ -138,10 +141,10 @@ function prompt() {
     // for type built in
     }else if (command === "echo") { // else addes for type
       console.log(args.slice(1).join(" ")); // Print everything after "echo"
-      prompt(); // Continue loop REPL
+      rl.prompt(); // Continue loop REPL
     } else if (command === "type") {
       handleTypeCommand(args);
-      prompt(); // Continue loop REPL
+      rl.prompt(); // Continue loop REPL
     // } else {
     //   console.log(`${command}: command not found`); // Print the command not found
     } else {
@@ -164,7 +167,7 @@ function prompt() {
     // }
 
     // console.log(`${input}: command not found`); // exit 0 line
-    prompt(); // Continue loop
+    // prompt(); // Continue loop
   });
 }
 
