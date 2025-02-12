@@ -128,8 +128,10 @@ function prompt() {
     // for type built in
     }else if (command === "echo") { // else addes for type
       console.log(args.slice(1).join(" ")); // Print everything after "echo"
+      prompt(); // Continue loop REPL
     } else if (command === "type") {
       handleTypeCommand(args);
+      prompt(); // Continue loop REPL
     // } else {
     //   console.log(`${command}: command not found`); // Print the command not found
     } else {
