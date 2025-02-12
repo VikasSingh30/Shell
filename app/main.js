@@ -106,7 +106,7 @@ function executeCommand(command, args) {
 //EXIT 0 implemented
 // shell REPL loop
 function prompt() {
-  // process.stdout.write("$ "); // Display prompt without newline  // line removed in order to run the command without $ prompt
+  process.stdout.write("$ "); // Display prompt without newline  // line removed in order to run the command without $ prompt
 
   rl.once("line", (input) => {
     // const trimmedInput = input.trim(); // line addes for echo builtin
@@ -157,6 +157,7 @@ function prompt() {
     prompt(); // Continue loop
   });
 }
+
 
 prompt(); // Start shell
 
