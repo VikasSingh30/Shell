@@ -2,6 +2,7 @@ const readline = require("readline");
 const { REPLServer } = require("repl");
 const fs = require("fs");  //implementing fs module for type excutable
 const path = require("path");  //implementing path module for type excutable
+const { spawn } = require("child_process");  //implementing child_process module for type excutable
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -73,6 +74,29 @@ function handleTypeCommand (args){
   }
 }
 
+// Function to execute external commands
+function executeCommand(command, args) {
+  const executablePath = findExecutable(command);
+
+  if (!executablePath) {
+    console.log(`${command}: command not found`);
+    return;
+  }
+
+    // Spawn the process
+    const child = spawn(executablePath, args, { stdio: "inherit" });
+
+    child.on("error", (err) => {
+      console.log(`${command}: execution failed`);
+    });
+  
+    child.on("exit", (code) => {
+      if (code !== 0) {
+        console.log(`${command}: process exited with code ${code}`);
+      }
+    });
+  }
+
 //EXIT 0 implemented
 // shell REPL loop
 function prompt() {
@@ -100,8 +124,10 @@ function prompt() {
       console.log(args.slice(1).join(" ")); // Print everything after "echo"
     } else if (command === "type") {
       handleTypeCommand(args);
+    // } else {
+    //   console.log(`${command}: command not found`); // Print the command not found
     } else {
-      console.log(`${command}: command not found`); // Print the command not found
+      executeCommand(command, args.slice(1)); // Execute the command
     }
     //   const checkCommand = args[1]; // The command to check
     //   if (builtins.has(checkCommand)) {
