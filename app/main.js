@@ -53,17 +53,24 @@ function findExecutable(command) {  // function for type executable  // this fun
   return null;
 }
 
-function handleTypeCommand (args){
+function handleTypeCommand(args) {
   const cmd = args[1];
-
-  if(!cmd){
+  if (!cmd) {
     console.log("type: missing argument");
     return;
   }
-
   if (builtins.has(cmd)) {
     console.log(`${cmd} is a shell builtin`);
-  
+  } else {
+    const executablePath = findExecutable(cmd);
+    if (executablePath) {
+      console.log(`${cmd} is ${executablePath}`); // ✅ Print correct executable path
+    } else {
+      console.log(`${cmd}: not found`); // ✅ Handle missing commands
+    }
+  }
+}
+
   //   if (!process.env.PATH) return null;
 //   // const pathDirs = process.env.PATH? process.env.PATH.split(";") : []; // Get PATH environment variable and split into directories
 //   const pathDirs = process.env.PATH.split(":"); // Get PATH environment variable and split into directories
@@ -87,17 +94,7 @@ function handleTypeCommand (args){
   //   }else{
   //     console.log(`${cmd}: not found`);
   //   }
-  }else {
-  //   console.log(`${cmd} is ${cmd}`);
-  // }
-  const executablePath = findExecutable(cmd);
-  if (executablePath) {
-    console.log(`${cmd} is ${executablePath}`);
-  } else {
-    console.log(`${cmd}: not found`);
-  }
-}
-}
+
 
 // Function to execute external commands
 function executeCommand(command, args) {
