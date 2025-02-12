@@ -1,14 +1,14 @@
 const readline = require("readline");
-// const { REPLServer } = require("repl");
-// const fs = require("fs");  //implementing fs module for type excutable
-// const path = require("path");  //implementing path module for type excutable
+const { REPLServer } = require("repl");
+const fs = require("fs");  //implementing fs module for type excutable
+const path = require("path");  //implementing path module for type excutable
 const { spawn } = require("child_process");  //implementing child_process module for type excutable
 
-// const rl = readline.createInterface({
-  // input: process.stdin,
-  // output: process.stdout,
-  // prompt: "$ "  // prompt for repl
-// });
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  prompt: "$ "  // prompt for repl
+});
 
 // rl.prompt();    // initial prompt for repl
 
@@ -87,16 +87,18 @@ function executeCommand(command, args) {
   // }
 
     // Spawn the process
-    const child = spawn(executablePath, args, { stdio: "inherit" });
+    const child = spawn(executablePath, args, { stdio: "inherit", shell: true });
 
     child.on("error", (err) => {
       console.log(`${command}: execution failed`);
+      prompt();   //continue REPL after failure  
     });
   
     child.on("exit", (code) => {
       if (code !== 0) {
         console.log(`${command}: process exited with code ${code}`);
       }
+      prompt();  //ensure prompt continues
     });
   }
 
