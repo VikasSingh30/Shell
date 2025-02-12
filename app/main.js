@@ -36,7 +36,8 @@ const builtins = new Set(["echo", "exit", "type"  ]); // line addes for type bui
 
 function findExecutable(command) {  // function for type executable
   if (!process.env.PATH) return null;
-  const pathDirs = process.env.PATH? process.env.PATH.split(";") : []; // Get PATH environment variable and split into directories
+  // const pathDirs = process.env.PATH? process.env.PATH.split(";") : []; // Get PATH environment variable and split into directories
+  const pathDirs = process.env.PATH.split(":"); // Get PATH environment variable and split into directories
 
   for (const dir of pathDirs) {
     const fullPath = path.join(dir, command); // Combine directory and command
