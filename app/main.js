@@ -126,7 +126,12 @@ function executeCommand(command, args) {
     // const child = spawn(executablePath, args, { stdio: "inherit", shell: true });
     // const child = spawn(command, args, { stdio: "inherit", shell: false });
     //const child = spawn(command, args, { stdio: ["inherit", "pipe", "pipe"], shell: false });
-    const child = spawn(executablePath, args, { stdio: "inherit" });
+    // const child = spawn(executablePath, args, { stdio: "inherit" });
+    const child = spawn(executablePath, args, {
+      stdio: "inherit",
+      shell: false,
+      argv0: command // Override `argv[0]` to match expected output
+    });
     // child.stdout.on("data", (data) => {
     //   process.stdout.write(data); // Correctly handle stdout
     // });
@@ -136,7 +141,7 @@ function executeCommand(command, args) {
     // });
 
     child.on("error", (err) => {
-      console.log(`${command}: execution failed`);
+      console.log(`${command}: execution failed-${err.message}`);
       // prompt();   //continue REPL after failure  
     });
   
