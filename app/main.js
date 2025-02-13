@@ -35,12 +35,16 @@ const rl = readline.createInterface({
 
 const builtins = new Set(["echo", "exit", "type"  ]); // line addes for type builtin to work with other built in
 
-function findExecutable(command) {  // function for type executable  // this function was added again in the end to make type executable work (run command)
-  if (!process.env.PATH) return null;
-  const pathDirs = process.env.PATH.split(":");
+//function findExecutable(command) 
+function findExecutable(cmd){  // function for type executable  // this function was added again in the end to make type executable work (run command)
+  // if (!process.env.PATH) return null;
+  // const pathDirs = process.env.PATH.split(":");
+  const paths = process.env.PATH.split(":"); // Get PATH environment variable and split into directories  
 
-  for (const dir of pathDirs) {
-    const fullPath = path.join(dir, command);
+  //for (const dir of pathDirs)
+    for (const dir of paths) { // Iterate over directories
+    //const fullPath = path.join(dir, command);
+    const fullPath = path.join(dir, cmd);
     if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
       try {
         fs.accessSync(fullPath, fs.constants.X_OK); // Check if executable
@@ -64,12 +68,13 @@ function handleTypeCommand(args) {
   } else {
     const executablePath = findExecutable(cmd);
     if (executablePath) {
-      console.log(`${cmd} is ${executablePath}`); // ✅ Print correct executable path
+      console.log(`${cmd} is ${executablePath}`); //  Correct output
     } else {
-      console.log(`${cmd}: not found`); // ✅ Handle missing commands
+      console.log(`${cmd}: not found`); //  Handle missing commands
     }
   }
 }
+
 
   //   if (!process.env.PATH) return null;
 //   // const pathDirs = process.env.PATH? process.env.PATH.split(";") : []; // Get PATH environment variable and split into directories
