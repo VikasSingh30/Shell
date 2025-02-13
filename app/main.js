@@ -257,25 +257,28 @@ const builtins = new Set(["echo", "exit", "type"]);
 
 function findExecutable(cmd) {
   if (!process.env.PATH) return null;
-  const paths = process.env.PATH.split(":");
+  const paths = process.env.PATH.split(":".trim());
 
   for (const dir of paths) {
     const fullPath = path.join(dir, cmd);
-    if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
-      return fullPath;
+    try {
+      if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile() && fs.accessSync(fullPath, fs.constants.X_OK) === undefined) {
+        return fullPath;
+      }
+    } catch (error) {
+      continue;
     }
   }
-
-  return cmd === "cp" ? "/bin/cp" : null; // Force correct cp path
+  return null;
 }
 
 function handleTypeCommand(args) {
-  const cmd = args[1];
-  if (!cmd) {
+  if (args.length < 2) {
     console.log("type: missing argument");
     return;
   }
 
+  const cmd = args[1];
   if (builtins.has(cmd)) {
     console.log(`${cmd} is a shell builtin`);
   } else {
@@ -283,7 +286,7 @@ function handleTypeCommand(args) {
     if (executablePath) {
       console.log(`${cmd} is ${executablePath}`);
     } else {
-      console.log(`${cmd}: not found`);
+      console.log(`${cmd} not found`);
     }
   }
 }
@@ -324,3 +327,4 @@ function prompt() {
 }
 
 prompt();
+
