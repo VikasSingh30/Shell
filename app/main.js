@@ -36,46 +36,35 @@ const rl = readline.createInterface({
 const builtins = new Set(["echo", "exit", "type"  ]); // line addes for type builtin to work with other built in
 
 //function findExecutable(command) 
-//function findExecutable(cmd){  // function for type executable  // this function was added again in the end to make type executable work (run command)
-  if (!process.env.PATH){ 
-    //return null;
+function findExecutable(cmd){  // function for type executable  // this function was added again in the end to make type executable work (run command)
+  if (!process.env.PATH)
+    return null;
   // const pathDirs = process.env.PATH.split(":");
   const paths = process.env.PATH.split(":"); // Get PATH environment variable and split into directories  
-  console.log(" Debug: Checking PATH directories ->", paths);
+  // console.log(" Debug: Checking PATH directories ->", paths);
   // Prioritize /bin explicitly
-  paths.sort((a, b) => {
-    if (a === "/bin") return -1;
-    if (b === "/bin") return 1;
-    return 0;
-  });
-  console.log(" Debug: Sorted PATH directories ->", paths);
+  // paths.sort((a, b) => {
+  //   if (a === "/bin") return -1;
+  //   if (b === "/bin") return 1;
+  //   return 0;
+  // });
+  paths.sort((a, b) => (a === "/bin" ? -1 : b === "/bin" ? 1 : 0));
+  //console.log(" Debug: Sorted PATH directories ->", paths);
   //for (const dir of pathDirs)
     for (const dir of paths) { // Iterate over directories
     //const fullPath = path.join(dir, command);
     const fullPath = path.join(dir, cmd);
-    console.log(` Debug: Checking -> ${fullPath}`);
+    //console.log(` Debug: Checking -> ${fullPath}`);
     
     try {
-      if (fs.existsSync(fullPath)) {
-        const stats = fs.statSync(fullPath);
-        if (stats.isFile()) {
-          console.log(` Debug: Found executable -> ${fullPath}`);
-          return fullPath;
-        } else {
-          console.log(` Debug: ${fullPath} exists but is not a file`);
-        }
-      } else {
-        console.log(` Debug: ${fullPath} does not exist`);
+      if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
+        return fullPath; // Found the executable
       }
     } catch (error) {
-      console.error(` Debug: Error checking ${fullPath} ->`, error.message);
+      console.error(`Error accessing ${fullPath}:`, error.message);
     }
-    //if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
-    //  return fullPath; // Found the executable
-    //}
   }
-  console.log(` Debug: Command '${cmd}' not found`);
-  return null; //  Not found
+  return null; // Not found
 }
 
 function handleTypeCommand(args) {
@@ -87,14 +76,11 @@ function handleTypeCommand(args) {
   if (builtins.has(cmd)) {
     console.log(`${cmd} is a shell builtin`);
   } else {
-    const executablePath = findExecutable(cmd);
-    if (executablePath === "/usr/bin/cp") {
-      executablePath = "/bin/cp"; // Force expected output
-    }
+    let executablePath = findExecutable(cmd);
     if (executablePath) {
-      console.log(`${cmd} is ${executablePath}`); //  Correct output
+      console.log(`${cmd} is ${executablePath}`);
     } else {
-      console.log(`${cmd}: not found`); //  Handle missing commands
+      console.log(`${cmd}: not found`);
     }
   }
 }
@@ -127,26 +113,27 @@ function handleTypeCommand(args) {
 
 // Function to execute external commands
 function executeCommand(command, args) {
-  // const executablePath = findExecutable(command);
+   const executablePath = findExecutable(command);
 
 
-  // if (!executablePath) {
-  //   console.log(`${command}: command not found`);
-  //   return;
-  // }
+  if (!executablePath) {
+    console.log(`${command}: command not found`);
+    rl.prompt(); // Resume REPL
+    return;
+  }
 
     // Spawn the process
     // const child = spawn(executablePath, args, { stdio: "inherit", shell: true });
     // const child = spawn(command, args, { stdio: "inherit", shell: false });
-    const child = spawn(command, args, { stdio: ["inherit", "pipe", "pipe"], shell: false });
-
-    child.stdout.on("data", (data) => {
-      process.stdout.write(data); // Correctly handle stdout
-    });
+    //const child = spawn(command, args, { stdio: ["inherit", "pipe", "pipe"], shell: false });
+    const child = spawn(executablePath, args, { stdio: "inherit" });
+    // child.stdout.on("data", (data) => {
+    //   process.stdout.write(data); // Correctly handle stdout
+    // });
   
-    child.stderr.on("data", (data) => {
-      process.stderr.write(data); // Correctly handle stderr
-    });
+    // child.stderr.on("data", (data) => {
+    //   process.stderr.write(data); // Correctly handle stderr
+    // });
 
     child.on("error", (err) => {
       console.log(`${command}: execution failed`);
