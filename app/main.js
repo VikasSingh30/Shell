@@ -46,15 +46,10 @@ function findExecutable(cmd){  // function for type executable  // this function
     //const fullPath = path.join(dir, command);
     const fullPath = path.join(dir, cmd);
     if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
-      try {
-        fs.accessSync(fullPath, fs.constants.X_OK); // Check if executable
-        return fullPath; // Found the executable
-      } catch (err) {
-        continue; // Ignore permission errors
-      }
+      return fullPath; // Found the executable
     }
   }
-  return null;
+  return null; //  Not found
 }
 
 function handleTypeCommand(args) {
