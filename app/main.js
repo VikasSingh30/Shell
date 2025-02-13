@@ -2,7 +2,7 @@ const readline = require("readline");
 const { REPLServer } = require("repl");
 const fs = require("fs");  //implementing fs module for type excutable
 const path = require("path");  //implementing path module for type excutable
-const { spawn } = require("child_process");  //implementing child_process module for type excutable
+const { spawn, execFileSync } = require("child_process");  //implementing child_process module for type excutable
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -43,12 +43,12 @@ function findExecutable(cmd){  // function for type executable  // this function
   const paths = process.env.PATH.split(":"); // Get PATH environment variable and split into directories  
   // console.log(" Debug: Checking PATH directories ->", paths);
   // Prioritize /bin explicitly
-  paths.sort((a, b) => {
-    if (a === "/bin") return -1;
-    if (b === "/bin") return 1;
-    return 0;
-  });
- // paths.sort((a, b) => (a === "/bin" ? -1 : b === "/bin" ? 1 : 0));
+  // paths.sort((a, b) => {
+  //   if (a === "/bin") return -1;
+  //   if (b === "/bin") return 1;
+  //   return 0;
+  // });
+  paths.sort((a, b) => (a === "/bin" ? -1 : b === "/bin" ? 1 : 0));
   //console.log(" Debug: Sorted PATH directories ->", paths);
   //for (const dir of pathDirs)
     for (const dir of paths) { // Iterate over directories
@@ -130,38 +130,46 @@ function executeCommand(command, args) {
     return;
   }
 
+  try {
+    execFileSync(executablePath, args, { stdio: "inherit" });
+  } catch (error) {
+    console.error(`${command}: execution failed`);
+  }
+
+  rl.prompt();
+
     // Spawn the process
     // const child = spawn(executablePath, args, { stdio: "inherit", shell: true });
     // const child = spawn(command, args, { stdio: "inherit", shell: false });
     //const child = spawn(command, args, { stdio: ["inherit", "pipe", "pipe"], shell: false });
     // const child = spawn(executablePath, args, { stdio: "inherit" });
-    const child = spawn(executablePath, args, {
-      stdio: "inherit",
-      shell: false,
-      argv0: command // Override `argv[0]` to match expected output
-    });
-    // child.stdout.on("data", (data) => {
-    //   process.stdout.write(data); // Correctly handle stdout
+    // const child = spawn(executablePath, args, {
+    //   stdio: "inherit",
+    //   shell: false,
+    //   argv0: command // Override `argv[0]` to match expected output
+    // });
+    // // child.stdout.on("data", (data) => {
+    // //   process.stdout.write(data); // Correctly handle stdout
+    // // });
+  
+    // // child.stderr.on("data", (data) => {
+    // //   process.stderr.write(data); // Correctly handle stderr
+    // // });
+
+    // child.on("error", (err) => {
+    //   console.log(`${command}: execution failed-${err.message}`);
+    //   // prompt();   //continue REPL after failure  
     // });
   
-    // child.stderr.on("data", (data) => {
-    //   process.stderr.write(data); // Correctly handle stderr
+    // child.on("exit", (code) => {
+    //   if (code !== 0) {
+    //     console.log(`${command}: process exited with code ${code}`);
+    //   }
+    //   // prompt();  //ensure prompt continues
+    //   // setTimeout(prompt, 10);  //ensure prompt continues
+    //   rl.prompt(); // Resume REPL correctly
+
     // });
-
-    child.on("error", (err) => {
-      console.log(`${command}: execution failed-${err.message}`);
-      // prompt();   //continue REPL after failure  
-    });
-  
-    child.on("exit", (code) => {
-      if (code !== 0) {
-        console.log(`${command}: process exited with code ${code}`);
-      }
-      // prompt();  //ensure prompt continues
-      // setTimeout(prompt, 10);  //ensure prompt continues
-      rl.prompt(); // Resume REPL correctly
-
-    });
   }
 
 //EXIT 0 implemented
