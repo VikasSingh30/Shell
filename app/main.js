@@ -130,24 +130,24 @@ function executeCommand(command, args) {
     return;
   }
 
-  try {
-    execFileSync(executablePath, args, { stdio: "inherit" });
-  } catch (error) {
-    console.error(`${command}: execution failed`);
-  }
+   try {
+  //   execFileSync(executablePath, args, { stdio: "inherit" });
+  // } catch (error) {
+  //   console.error(`${command}: execution failed`);
+  // }
 
-  rl.prompt();
+  // rl.prompt();
 
     // Spawn the process
     // const child = spawn(executablePath, args, { stdio: "inherit", shell: true });
     // const child = spawn(command, args, { stdio: "inherit", shell: false });
     //const child = spawn(command, args, { stdio: ["inherit", "pipe", "pipe"], shell: false });
     // const child = spawn(executablePath, args, { stdio: "inherit" });
-    // const child = spawn(executablePath, args, {
-    //   stdio: "inherit",
-    //   shell: false,
-    //   argv0: command // Override `argv[0]` to match expected output
-    // });
+    const child = spawn(executablePath, args, {
+      stdio: "inherit",
+      shell: false,
+      argv0: command // Override `argv[0]` to match expected output
+    });
     // // child.stdout.on("data", (data) => {
     // //   process.stdout.write(data); // Correctly handle stdout
     // // });
@@ -156,20 +156,24 @@ function executeCommand(command, args) {
     // //   process.stderr.write(data); // Correctly handle stderr
     // // });
 
-    // child.on("error", (err) => {
-    //   console.log(`${command}: execution failed-${err.message}`);
-    //   // prompt();   //continue REPL after failure  
-    // });
+    child.on("error", (err) => {
+      console.log(`${command}: execution failed-${err.message}`);
+      // prompt();   //continue REPL after failure  
+    });
   
-    // child.on("exit", (code) => {
-    //   if (code !== 0) {
-    //     console.log(`${command}: process exited with code ${code}`);
-    //   }
+    child.on("exit", (code) => {
+      if (code !== 0) {
+        console.log(`${command}: process exited with code ${code}`);
+      }
     //   // prompt();  //ensure prompt continues
     //   // setTimeout(prompt, 10);  //ensure prompt continues
-    //   rl.prompt(); // Resume REPL correctly
+      rl.prompt(); // Resume REPL correctly
 
-    // });
+     });
+    } catch (error) {
+      console.log(`${command}: execution failed`);
+      rl.prompt();
+    }
   }
 
 //EXIT 0 implemented
