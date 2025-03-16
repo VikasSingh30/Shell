@@ -1,4 +1,6 @@
-[![project-banner](https://ibb.co/9m9TDdv2)
+<div align="center">
+[![👋](https://ibb.co/9m9TDdv2)]
+
 
 This is a starting point for JS solutions
 #"Build Your Own Shell" Challenge
@@ -77,23 +79,23 @@ node shell.js
 
 
  ##✅ Working Features:##
-✔️ Built-in commands (exit, echo, type, pwd, cd) are implemented correctly.
-✔️ Redirection (>, >>, 2>, 1>) is handled well for both stdout and stderr.
-✔️ Quoted strings and escape characters are properly parsed.
-✔️ External commands (like ls, cat, mkdir) are handled using exec.
-✔️ autoComplete is functional and includes built-in commands + executables from PATH.
-✔️ Clean handling of user input and terminal interface using readline.
-✔️ Graceful Ctrl + C (SIGINT) handling.
+✔️ Built-in commands (exit, echo, type, pwd, cd) are implemented correctly.<br>
+✔️ Redirection (>, >>, 2>, 1>) is handled well for both stdout and stderr.<br>
+✔️ Quoted strings and escape characters are properly parsed.<br>
+✔️ External commands (like ls, cat, mkdir) are handled using exec.<br>
+✔️ autoComplete is functional and includes built-in commands + executables from PATH.<br>
+✔️ Clean handling of user input and terminal interface using readline.<br>
+✔️ Graceful Ctrl + C (SIGINT) handling.<br>
 
 
 ##🛠️ Tech Stack
-✔️ Node.js
-✔️ JavaScript
-✔️ readline
-✔️ exec
+✔️ Node.js<br>
+✔️ JavaScript<br>
+✔️ readline<br>
+✔️ exec<br>
 
 ##🤝 Contributing
-👋 Feel free to submit a pull request or open an issue for any improvements or bugs!
-👋 Lets Learn, Solve together and make it better!
+👋 Feel free to submit a pull request or open an issue for any improvements or bugs!<br>
+👋 Lets Learn, Solve together and make it better!<br>
 
-
+</ dive>
