@@ -21,13 +21,12 @@ This is a custom shell built using **Node.js**. It supports built-in commands, e
 
 ## 🏗️ Project Structure
 
-📂 custom-shell
-├── 📄 shell.js
-├── 📄 README.md
-└── 📂 src
-├── 📄 builtins.js
-├── 📄 parser.js
-└── 📄 executor.js
+📂 custom-shell<br>
+ ├──📂node_modules<br>
+ ├──📂package-lock.json <br>
+ ├──📂package.json<br>
+ ├──📄shell.js<br>
+├──📄README.md<br>
 
 ---
 
