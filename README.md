@@ -74,7 +74,7 @@ node shell.js
 | └─ 🧩 **Partial completions** | Handle partial matches during completion |  
 
 
- ##✅ **Working Features**
+ ## ✅ **Working Features**
 ✔️ Built-in commands (exit, echo, type, pwd, cd) are implemented correctly.<br>
 ✔️ Redirection (>, >>, 2>, 1>) is handled well for both stdout and stderr.<br>
 ✔️ Quoted strings and escape characters are properly parsed.<br>
@@ -83,13 +83,13 @@ node shell.js
 ✔️ Clean handling of user input and terminal interface using readline.<br>
 ✔️ Graceful Ctrl + C (SIGINT) handling.<br>
 
-##🏆 **To Add features in future**
-✅ Add better auto-completion handling<br>
-✅ Improve input validation<br>
-✅ Allow for multi-line commands<br>
-✅ Add a history feature<br>
+## 🏆 **To Add features in future**
+✔️ Add better auto-completion handling<br>
+✔️ Improve input validation<br>
+✔️ Allow for multi-line commands<br>
+✔️ Add a history feature<br>
 
-##🛠️ **Tech Stack**
+## 🛠️ **Tech Stack**
 ✔️ Node.js<br>
 ✔️ JavaScript<br>
 ✔️ readline<br>
