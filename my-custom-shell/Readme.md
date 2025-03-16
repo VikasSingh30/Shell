@@ -35,9 +35,6 @@ This is a custom shell built using **Node.js**. It supports built-in commands, e
 
 ### Step 1: ✅ **Setup Environment**
 Make sure you have **Node.js** installed on your system.  
-Check Node.js version:
-```bash
-node -v
 
 ### ✅ **Step 2: Start the Shell**  
 node shell.js
