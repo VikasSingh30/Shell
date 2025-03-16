@@ -276,11 +276,3 @@ rl.on('SIGINT', () => {
 console.log('$ ');
 rl.prompt();
 
-// ✅ Working Features:
-// ✔️ Built-in commands (exit, echo, type, pwd, cd) are implemented correctly.
-// ✔️ Redirection (>, >>, 2>, 1>) is handled well for both stdout and stderr.
-// ✔️ Quoted strings and escape characters are properly parsed.
-// ✔️ External commands (like ls, cat, mkdir) are handled using exec.
-// ✔️ autoComplete is functional and includes built-in commands + executables from PATH.
-// ✔️ Clean handling of user input and terminal interface using readline.
-// ✔️ Graceful Ctrl + C (SIGINT) handling.
