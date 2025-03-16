@@ -95,7 +95,7 @@ node shell.js
 ✔️ readline<br>
 ✔️ exec<br>
 
-##🤝 **Contributing**
+## 🤝 **Contributing**
 👋 Feel free to submit a pull request or open an issue for any improvements or bugs!<br>
 👋 Lets Learn, Solve together and make it better!<br>
 
