@@ -1,5 +1,4 @@
 <div style="text-align: center;">
-[![👋](./github-header.png)]
 
  # "Build Your Own Shell"
 
