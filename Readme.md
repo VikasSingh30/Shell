@@ -1,14 +1,13 @@
-<div align="center">
-[![👋](https://ibb.co/S4Bdsbk3)]
+<div style="text-align: center;">
+[![👋](./github-header.png)]
 
-
-This is a starting point for JS solutions
-#"Build Your Own Shell" Challenge
-
+ # "Build Your Own Shell"
 
 # 🐚 Custom Shell in JavaScript
 
 This is a custom shell built using **Node.js**. It supports built-in commands, external commands, input parsing, output redirection, and autocomplete functionality. This guide will take you through the entire process of setting up, building, running, and deploying the shell step-by-step.
+
+"Will try to make frontend"
 
 ---
 
@@ -78,7 +77,7 @@ node shell.js
 | └─ 🧩 **Partial completions** | Handle partial matches during completion |  
 
 
- ##✅ Working Features:##
+ ##✅ **Working Features**
 ✔️ Built-in commands (exit, echo, type, pwd, cd) are implemented correctly.<br>
 ✔️ Redirection (>, >>, 2>, 1>) is handled well for both stdout and stderr.<br>
 ✔️ Quoted strings and escape characters are properly parsed.<br>
@@ -87,8 +86,13 @@ node shell.js
 ✔️ Clean handling of user input and terminal interface using readline.<br>
 ✔️ Graceful Ctrl + C (SIGINT) handling.<br>
 
+##🏆 **To Add features in future**
+✅ Add better auto-completion handling<br>
+✅ Improve input validation<br>
+✅ Allow for multi-line commands<br>
+✅ Add a history feature<br>
 
-##🛠️ Tech Stack
+##🛠️ **Tech Stack**
 ✔️ Node.js<br>
 ✔️ JavaScript<br>
 ✔️ readline<br>
@@ -97,5 +101,6 @@ node shell.js
 ##🤝 Contributing
 👋 Feel free to submit a pull request or open an issue for any improvements or bugs!<br>
 👋 Lets Learn, Solve together and make it better!<br>
+
 
 </ dive>
