@@ -1,5 +1,5 @@
 <div align="center">
-[![👋](https://ibb.co/9m9TDdv2)]
+[![👋](https://ibb.co/S4Bdsbk3)]
 
 
 This is a starting point for JS solutions
